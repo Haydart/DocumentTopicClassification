@@ -22,7 +22,7 @@ for directory in article_directories:
     for filename in files_under_directory:
         with open(preprocessed_articles_path + "/" + directory + "/" + filename, 'w+') as outfile:
             with open(org_articles_path + "/" + directory + "/" + filename, 'r', encoding='utf-8') as infile:
-                with open('cleaned_texts', 'a+') as file:
+                with open('labels', 'a+') as file:
                     input_text = infile.read()
                     sanitized_html = sanitizer.sanitize(input_text)
                     plain_text = html2text.html2text(sanitized_html)
@@ -36,6 +36,6 @@ for directory in article_directories:
 
                     x.append(cleaned_text)
                     labels.append(directory)
-                    file.write(cleaned_text + ',')
+                    file.write(directory + ',')
                     print(i)
                     i+=1
