@@ -1,6 +1,7 @@
 from html_sanitizer import Sanitizer
 import os
 import html2text
+import re
 
 sanitizer = Sanitizer()  # default configuration
 
@@ -17,9 +18,10 @@ for directory in article_directories:
     print(files_under_directory)
 
     for filename in files_under_directory:
-        with open(preprocessed_articles_path + "/" + directory + "/" + filename, 'w') as outfile:
+        with open(preprocessed_articles_path + "/" + directory + "/" + filename, 'w+') as outfile:
             with open(org_articles_path + "/" + directory + "/" + filename, 'r', encoding='utf-8') as infile:
                 input_text = infile.read()
                 sanitized_html = sanitizer.sanitize(input_text)
                 plain_text = html2text.html2text(sanitized_html)
-                outfile.writelines(plain_text)
+                cleaned_text = re.sub(r'/wiki/[a-zA-Z0-9_%:!@#$^&*(),.]*[ |\\|\n\r]', '', plain_text, flags=re.MULTILINE)
+                outfile.writelines(cleaned_text)
