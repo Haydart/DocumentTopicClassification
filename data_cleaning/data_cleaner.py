@@ -2,15 +2,22 @@ from html_sanitizer import Sanitizer
 import os
 
 sanitizer = Sanitizer()  # default configuration
-sanitized_html = sanitizer.sanitize('<html>sample text</html>')
 
-articles_path = '../org_dataset/articles'
+org_articles_path = '../org_dataset/articles'
+preprocessed_articles_path = '../preprocessed_dataset/articles'
 not_labels = ["__init__.py", "Artykuly.csv"]
-article_directories = [dir_name for dir_name in os.listdir(articles_path) if dir_name not in not_labels]
+article_directories = [dir_name for dir_name in os.listdir(org_articles_path) if dir_name not in not_labels]
 
 print(article_directories)
 
 for directory in article_directories:
     print(directory)
-    files_under_directory = os.listdir(articles_path + "/" + directory)
+    files_under_directory = os.listdir(org_articles_path + "/" + directory)
     print(files_under_directory)
+
+    for filename in files_under_directory:
+        with open(preprocessed_articles_path + "/" + directory + "/" + filename, 'w') as outfile:
+            with open(org_articles_path + "/" + directory + "/" + filename, 'r', encoding='utf-8') as infile:
+                input_text = infile.read()
+                preprocessed_text = sanitizer.sanitize(input_text)
+                outfile.writelines(preprocessed_text)
