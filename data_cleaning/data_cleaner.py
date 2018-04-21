@@ -1,5 +1,6 @@
 from html_sanitizer import Sanitizer
 import os
+import html2text
 
 sanitizer = Sanitizer()  # default configuration
 
@@ -19,5 +20,6 @@ for directory in article_directories:
         with open(preprocessed_articles_path + "/" + directory + "/" + filename, 'w') as outfile:
             with open(org_articles_path + "/" + directory + "/" + filename, 'r', encoding='utf-8') as infile:
                 input_text = infile.read()
-                preprocessed_text = sanitizer.sanitize(input_text)
-                outfile.writelines(preprocessed_text)
+                sanitized_html = sanitizer.sanitize(input_text)
+                plain_text = html2text.html2text(sanitized_html)
+                outfile.writelines(plain_text)
