@@ -23,7 +23,7 @@ for directory in article_directories:
                 input_text = infile.read()
                 sanitized_html = sanitizer.sanitize(input_text)
                 plain_text = html2text.html2text(sanitized_html)
-                cleaned_text = re.sub(r'/wiki/[a-zA-Z0-9_%:!@#$^&*()-;\'\"/`~,.]*[ |\\|\n\r]', '', plain_text, flags=re.MULTILINE)
+                cleaned_text = re.sub(r'/[/W+]*/[a-zA-Z0-9_%:!@#$^&*()-;\'\"/`~,.]*[ |\\|\n\r]', '', plain_text, flags=re.MULTILINE)
                 cleaned_text = re.sub(r'^https?:\/\/.*[\r\n]*', '', cleaned_text, flags=re.MULTILINE)
                 cleaned_text = re.sub(r'\W+', ' ', cleaned_text)
                 cleaned_text = re.sub(' +', ' ', cleaned_text)
